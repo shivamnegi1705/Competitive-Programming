@@ -19,7 +19,7 @@ class Solution:
             if worker in mapper:
                 mapper[worker].append(time_in_min)
             else:
-                mapper[cur] = [time_in_min]
+                mapper[worker] = [time_in_min]
         
         # sorting the list(sorting time for each worker) of all keys in mapper
         for i in mapper:
@@ -29,13 +29,13 @@ class Solution:
         
         
         for i in mapper:
-            temp = d[i]
+            value = mapper[i]
             # possiblity of getting use of card 3 or more than 3 times
-            if len(temp)>=3:
+            if len(value)>=3:
                 st = 0
                 en = 2
-                while en<len(temp):
-                    if temp[en]-temp[st]<=60:
+                while en<len(value):
+                    if value[en]-value[st]<=60:
                         arr.append(i)
                         break
                     en+=1
