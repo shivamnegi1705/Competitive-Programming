@@ -1,4 +1,5 @@
-# Question Link:- 
+# Question Link:- https://codeforces.com/contest/1430/problem/A
+
 mex = 1005
 save = [[] for i in range(mex)]
 can = [False for i in range(mex)]
