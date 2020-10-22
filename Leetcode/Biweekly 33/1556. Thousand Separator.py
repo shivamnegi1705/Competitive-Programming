@@ -1,4 +1,4 @@
-# Question Link:- https://leetcode.com/problems/minimum-numbers-of-function-calls-to-make-target-array/
+# Question Link:- https://leetcode.com/problems/thousand-separator/
 class Solution:
     def thousandSeparator(self, n: int) -> str:
         cnt = 0
