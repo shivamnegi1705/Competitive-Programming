@@ -1,0 +1,162 @@
+// DSU 
+#include <bits/stdc++.h>
+
+using namespace std;
+
+#define ll long long
+
+#define mod 1000000007
+
+ll gcd(ll aa,ll bb) { if(aa==0) return bb; return(bb%aa,aa); }
+  
+int start[100005],end1[100005],vis[100005],vis1[100005];
+
+int size[100005]={0},parent[100005]={0};
+
+vector < int > a[100005];
+
+vector < pair < int , int > > q[100005]; 
+int root(int i)
+    {
+        while(parent[ i ] != i)
+        {
+         i = parent[ i ];
+        }
+        return i;
+    }
+
+void union1(int A,int B)
+    {
+        int root_A = root(A);
+        int root_B = root(B),i;
+        if(size[root_A] < size[root_B ])
+        {
+            parent[ root_A ] = parent[root_B];
+            size[root_B] += size[root_A];
+        }
+        else
+        {
+            parent[ root_B ] = parent[root_A];
+            size[root_A] += size[root_B];
+        }
+    }
+
+bool find(int A,int B)
+    {
+        if( root(A)==root(B) )
+        return true;
+        else
+        return false;
+    }
+
+void fun()
+    {
+        int i;
+        for(i=0;i<100005;i++)
+            {
+            parent[i]=i;
+            size[i]=1;
+            }
+    }
+
+int t=1;
+
+void dfs(int n)
+{
+    vis[n]=1;
+    start[n]=t++;
+    
+    for(int i=0;i<a[n].size();i++)
+    {
+        if(vis[a[n][i]]==0)
+            dfs(a[n][i]);
+    }
+    end1[n]=t++;
+}
+
+int main()
+{
+    ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+
+    fun();
+
+    int n,m;
+    cin>>n>>m;
+    
+    vector < pair < int , pair < int , int > > > ed;
+    int j=1,x=0,t1,t2,t3;
+    for(int i=0;i<m;i++)
+    {
+        cin>>t3;
+        if(t3==1)
+        {
+            cin>>t1>>t2;
+            a[t2].push_back(t1);
+            ed.push_back({1,{t1,t2}});
+            vis1[t1]=1;
+        }
+        else if(t3==2)
+        {
+            cin>>t1;
+            ed.push_back({2,{t1,j++}});
+        }
+        else
+        {
+            cin>>t1>>t2;
+            ed.push_back({3,{0,0}});
+            q[t2].push_back({t1,x++});
+        }
+    }
+    
+    int ans[100005]={0};
+    
+    for(int i=1;i<=n;i++)
+    {
+        if(vis[i]==0 && vis1[i]==0)
+        {
+            dfs(i);   
+        }
+     //   cout<<start[i]<<" "<<end1[i]<<endl;
+    }
+    
+    for(int i=0;i<m;i++)
+    {
+        if(ed[i].first ==3)
+            continue;
+        
+        if(ed[i].first==1)
+        {
+            union1(ed[i].second.first,ed[i].second.second);
+            continue;
+        }
+        int d=ed[i].second.second;
+        int pp=ed[i].second.first;
+       for(int j=0;j<q[d].size();j++)
+        {
+           
+            if(start[q[d][j].first] <= start[pp] && end1[q[d][j].first] >= end1[pp] && find(pp,q[d][j].first))
+            {
+               ans[q[d][j].second]=1;
+            }
+            else
+            {
+                ans[q[d][j].second]=0;
+            }
+        }
+    }
+    
+    for(int i=0;i<x;i++)
+    {
+        if(ans[i]==1)
+        {
+            cout<<"YES"<<endl;
+        }
+        else
+        {
+            cout<<"NO"<<endl;
+        }
+    }
+    
+    
+    return 0;
+}
