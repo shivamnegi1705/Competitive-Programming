@@ -22,18 +22,20 @@ public:
             return dp[r][length];
         }
         int ch1 = 0, ch2 = 0;
+        
         // left pointer = right pointer - length + 1.
         int l = r-length+1;
         // ch1 --> end current subarray at point r
         ch1 = lookup[l][r]*length + func(r+1,1,k);
-        
         // if it is possible to extend current subarray.
+        int ans = ch1;
         if(length+1<=k){    
             int ch2 = func(r+1,length+1,k);
+            ans = max(ans,ch2);
         }
         
         // set max of both choices.
-        return dp[r][length] = max(ch1,ch2);
+        return dp[r][length] = ans;
     }
     int maxSumAfterPartitioning(vector<int>& arr, int k){
         n = arr.size();
