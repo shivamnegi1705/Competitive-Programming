@@ -1,0 +1,49 @@
+// Question Link:- https://leetcode.com/problems/wildcard-matching
+
+int dp[2000][2000];
+class Solution {
+public:
+    int n,m;
+    string s,p;
+    bool func(int i,int j){
+        if(i==n && j==m){
+            return true;
+        }
+        if(i==n ||j==m){
+            if(j==m){
+                return false;
+            }
+            else{
+                if(p[j]=='*'){
+                    return func(i,j+1);
+                }
+                return false;
+            }
+        }
+        
+        if(dp[i][j]!=-1){
+            return dp[i][j];
+        }
+        bool ans = false;
+        if(s[i]==p[j]){
+            ans = (true && func(i+1,j+1));
+        }
+        else{
+            if(p[j]=='?'){
+                ans = (true && func(i+1,j+1));
+            }
+            else if(p[j]=='*'){
+                ans = (ans || (true && (func(i+1,j+1) || func(i+1,j) || func(i,j+1))));
+            }
+        }
+        return dp[i][j] = ans;
+    }
+    bool isMatch(string s1, string p1) {
+        n = s1.size();
+        m = p1.size();
+        s = s1;
+        p = p1;
+        memset(dp,-1,sizeof(dp));
+        return func(0,0);
+    }
+};
